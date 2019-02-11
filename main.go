@@ -3,17 +3,12 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"text/template"
 )
 
 //set up my templates
 var tpl *template.Template
-
-func init() {
-	tpl = template.Must(template.ParseFiles("index.gohtml"))
-}
 
 func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("File Upload Endpoint Hit")
@@ -55,24 +50,15 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Successfully Uploaded File\n")
 }
 
-type thing int
-
-func (t thing) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	err := req.ParseForm()
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	tpl.ExecuteTemplate(w, "index.gohtml", req.Form)
-}
-
 func setupRoutes() {
-	var th thing
+
 	http.HandleFunc("/upload", uploadFile)
-	http.ListenAndServe(":8080", th)
+	http.ListenAndServe(":8080", nil)
 }
 
 func main() {
-	fmt.Println("server is running")
+	fmt.Println("Hello World")
+	http.Handle("/", http.FileServer(http.Dir("./static")))
+
 	setupRoutes()
 }
