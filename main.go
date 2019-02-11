@@ -4,11 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"text/template"
 )
-
-//set up my templates
-var tpl *template.Template
 
 func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("File Upload Endpoint Hit")
@@ -57,8 +53,7 @@ func setupRoutes() {
 }
 
 func main() {
-	fmt.Println("Hello World")
+	fmt.Println("Server is running")
 	http.Handle("/", http.FileServer(http.Dir("./static")))
-
 	setupRoutes()
 }
